@@ -82,13 +82,15 @@ async function downloadFileFromS3(
     },
   });
 
-  const key = new URL(s3Uri).pathname.slice(1);
+  const url = new URL(s3Uri);
+  const bucket = url.hostname;
+  const key = url.pathname.slice(1);
 
   console.log("Downloading file from S3:", key);
 
   const { Body } = await s3.send(
     new GetObjectCommand({
-      Bucket: process.env.BUCKET,
+      Bucket: bucket,
       Key: key,
     })
   );
